@@ -1,0 +1,36 @@
+{
+  "name": "widok-slider",
+  "version": "1.0.0",
+  "description": "",
+  "main": "widok-anchor-scroll.js",
+  "scripts": {
+    "watch": "webpack --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cash-dom": "^8.1.0",
+    "widok": "github:studio-widok/widok",
+    "widok-scroll-item": "github:studio-widok/widok-scroll-item",
+    "widok-throttle": "github:studio-widok/widok-throttle"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.10",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.0.1",
+    "file-loader": "^6.2.0",
+    "mini-css-extract-plugin": "^1.3.3",
+    "postcss": "^8.2.1",
+    "postcss-loader": "^4.1.0",
+    "postcss-preset-env": "^6.7.0",
+    "sass": "^1.30.0",
+    "sass-loader": "^10.1.0",
+    "webpack": "^5.10.2",
+    "webpack-cli": "^4.2.0"
+  },
+  "files": [
+    "widok-anchor-scroll.js"
+  ]
+}

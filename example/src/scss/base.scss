@@ -1,0 +1,13 @@
+.nav-single.current {
+  background-color: rgb(50, 0, 0);
+}
+
+#nav {
+  position: fixed;
+  background-color: #ccc;
+  width: 200px;
+}
+
+#nav.disable {
+  opacity: 0;
+}
