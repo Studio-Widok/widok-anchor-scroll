@@ -1,4 +1,7 @@
 import './../scss/base.scss';
-const createAnchorScroll = require('./../../../widok-anchor-scroll');
+import createAnchorScroll from './../../../widok-anchor-scroll';
 
-createAnchorScroll('#nav', '.nav-single', '.anchor');
+createAnchorScroll({
+  sections: '.section',
+  bullets: '.anchor-bullet',
+});
