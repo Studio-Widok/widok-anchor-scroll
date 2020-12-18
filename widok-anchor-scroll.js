@@ -53,7 +53,6 @@ class AnchorSet {
         closest = section;
       }
     });
-    console.log(closest.distance);
     closest.bullet.markCurrent();
   }
 }
