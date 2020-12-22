@@ -1,7 +1,7 @@
-const $ = require('cash-dom');
-const throttle = require('widok-throttle');
-const createScrollItem = require('widok-scroll-item');
-const widok = require('widok');
+import $ from 'cash-dom';
+import throttle from 'widok-throttle';
+import createScrollItem from 'widok-scroll-item';
+import widok from 'widok';
 
 /**
  * @typedef {Object} options
