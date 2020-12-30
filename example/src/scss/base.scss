@@ -75,3 +75,22 @@ body {
     }
   }
 }
+
+#scroll-next {
+  position: fixed;
+  bottom: 2em;
+  left: 2em;
+  border-radius: 50%;
+  width: 4em;
+  height: 4em;
+  background-color: #7cff9d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}

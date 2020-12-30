@@ -35,6 +35,8 @@ class AnchorSet {
     $(this.options.sections).each((index, element) => {
       this.sections.push(new Section(element, index, this));
     });
+
+    this.current = this.findCurrent();
   }
 
   prepareOptions(options) {
@@ -54,6 +56,20 @@ class AnchorSet {
       }
     });
     closest.bullet.markCurrent();
+    this.current = closest;
+  }
+
+  scrollToNext() {
+    let isNext = false;
+    for (let i = 0; i< this.sections.length; i++) {
+      if (isNext) {
+        this.sections[i].goTo();
+        break;
+      }
+      if (this.sections[i].id === this.current.id) {
+        isNext = true;
+      }
+    }
   }
 }
 
