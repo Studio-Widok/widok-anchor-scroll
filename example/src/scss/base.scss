@@ -8,6 +8,11 @@ body {
   color: #2a363b;
 }
 
+header {
+  min-height: 100vh;
+  background-color: #9f98b8;
+}
+
 #nav {
   position: fixed;
   top: 0;
@@ -92,5 +97,9 @@ body {
 
   &:hover {
     opacity: 0.7;
+  }
+
+  &.hide {
+    display: none;
   }
 }

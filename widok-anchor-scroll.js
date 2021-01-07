@@ -8,6 +8,7 @@ import widok from 'widok';
  * @property {string} bullets `[default = '.anchor-bullet']` - selector of the bullets
  * @property {string} sections `[default = '.section']` - selector of the sections
  * @property {string} wrap - selector of the bullet wrap, will be populated with bullets. `bullet` property is ignored.
+ * @property {string} scrollNext - `[default = '#anchor-scroll-next']` - selector of scroll to next
  */
 
 class AnchorSet {
@@ -37,37 +38,71 @@ class AnchorSet {
     });
 
     this.current = this.findCurrent();
+    this.isScrollNextVisible = true;
+    this.scrollNext = $(this.options.scrollNext);
   }
 
   prepareOptions(options) {
     this.options = {
       bullets: '.anchor-bullet',
       sections: '.section',
+      scrollNext: '#anchor-scroll-next',
     };
     Object.assign(this.options, options);
   }
 
   findCurrent() {
-    let closest;
     this.sections.forEach(section => {
       section.calculateDistance();
-      if (closest === undefined || section.distance < closest.distance) {
-        closest = section;
-      }
     });
-    closest.bullet.markCurrent();
-    this.current = closest;
+    this.current = this.sections.reduce((prevValue, currValue) =>
+      currValue.distance > prevValue.distance ? prevValue : currValue
+    );
+
+    if (this.current.id === this.sections[0].id) {
+      if (this.current.distance < widok.h / 2) {
+        this.toggleScrollNext(false);
+        this.current.bullet.markCurrent();
+      } else {
+        this.toggleScrollNext(true);
+        this.current.bullet.removeCurrent();
+        this.current = undefined;
+      }
+    } else if (this.current.id === this.sections[this.sections.length - 1].id) {
+      this.toggleScrollNext(true);
+      if (this.current.distance >= widok.h / 4) {
+        this.current.bullet.removeCurrent();
+        this.current = undefined;
+      } else {
+        this.current.bullet.markCurrent();
+      }
+    } else {
+      this.current.bullet.markCurrent();
+      this.toggleScrollNext(false);
+    }
   }
 
   scrollToNext() {
     let isNext = false;
-    for (let i = 0; i< this.sections.length; i++) {
+    for (let i = 0; i < this.sections.length; i++) {
       if (isNext) {
         this.sections[i].goTo();
         break;
       }
       if (this.sections[i].id === this.current.id) {
         isNext = true;
+      }
+    }
+  }
+
+  toggleScrollNext(shouldHide) {
+    if (this.scrollNext !== undefined) {
+      if (shouldHide && this.isScrollNextVisible) {
+        this.scrollNext.addClass('hide');
+        this.isScrollNextVisible = false;
+      } else if (!shouldHide && !this.isScrollNextVisible) {
+        this.scrollNext.removeClass('hide');
+        this.isScrollNextVisible = true;
       }
     }
   }
@@ -123,6 +158,10 @@ class Bullet {
       if (section.id === this.section.id) return;
       section.bullet.element.removeClass('anchor-current');
     });
+  }
+
+  removeCurrent() {
+    this.element.removeClass('anchor-current');
   }
 }
 
