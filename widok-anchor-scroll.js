@@ -60,11 +60,10 @@ class AnchorSet {
     );
 
     if (this.current.id === this.sections[0].id) {
+      this.toggleScrollNext(false);
       if (this.current.distance < widok.h / 2) {
-        this.toggleScrollNext(false);
         this.current.bullet.markCurrent();
       } else {
-        this.toggleScrollNext(true);
         this.current.bullet.removeCurrent();
         this.current = undefined;
       }
@@ -84,13 +83,17 @@ class AnchorSet {
 
   scrollToNext() {
     let isNext = false;
-    for (let i = 0; i < this.sections.length; i++) {
-      if (isNext) {
-        this.sections[i].goTo();
-        break;
-      }
-      if (this.sections[i].id === this.current.id) {
-        isNext = true;
+    if (this.current === undefined) {
+      this.sections[0].goTo();
+    } else {
+      for (let i = 0; i < this.sections.length; i++) {
+        if (isNext) {
+          this.sections[i].goTo();
+          break;
+        }
+        if (this.sections[i].id === this.current.id) {
+          isNext = true;
+        }
       }
     }
   }
