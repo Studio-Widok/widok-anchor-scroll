@@ -81,10 +81,31 @@ class AnchorSet {
     }
   }
 
+  scrollToPrev() {
+    let isPrev = false;
+    if (this.current === undefined) {
+      if (this.sections[this.sections.length - 1].distanceDirection < 0) {
+        this.sections[this.sections.length - 1].goTo();
+      }
+    } else {
+      for (let i = this.sections.length - 1; i >= 0; i--) {
+        if (isPrev) {
+          this.sections[i].goTo();
+          break;
+        }
+        if (this.sections[i].id === this.current.id) {
+          isPrev = true;
+        }
+      }
+    }
+  }
+
   scrollToNext() {
     let isNext = false;
     if (this.current === undefined) {
-      this.sections[0].goTo();
+      if (this.sections[0].distanceDirection > 0) {
+        this.sections[0].goTo();
+      }
     } else {
       for (let i = 0; i < this.sections.length; i++) {
         if (isNext) {
@@ -141,6 +162,7 @@ class Section {
     const beforeCenter =
       widok.s + widok.h / 2 - this.scrollItem.offset - this.scrollItem.height;
     this.distance = Math.max(0, afterCenter, beforeCenter);
+    this.distanceDirection = afterCenter > 0 ? 1 : -1;
     return this.distance;
   }
 }
