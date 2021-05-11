@@ -38,6 +38,7 @@ class AnchorSet {
     });
 
     this.current = this.findCurrent();
+    this.prevCurrent = undefined;
     this.isScrollNextVisible = true;
     this.scrollNext = $(this.options.scrollNext);
   }
@@ -55,29 +56,38 @@ class AnchorSet {
     this.sections.forEach(section => {
       section.calculateDistance();
     });
+    this.prevCurrent = this.current;
     this.current = this.sections.reduce((prevValue, currValue) =>
       currValue.distance > prevValue.distance ? prevValue : currValue
     );
+    if (!this.current.scrollItem.isOnScreen) this.current = undefined;
+    if (this.current) this.toggleScrollNext(false);
 
-    if (this.current.id === this.sections[0].id) {
-      this.toggleScrollNext(false);
+    if (this.current?.id === this.sections[0].id) {
       if (this.current.distance < widok.h / 2) {
-        this.current.bullet.markCurrent();
+        this.markCurrent();
       } else {
-        this.current.bullet.removeCurrent();
+        this.current.bullet.removeCurrentAbove();
         this.current = undefined;
       }
-    } else if (this.current.id === this.sections[this.sections.length - 1].id) {
+    } else if (
+      this.current?.id === this.sections[this.sections.length - 1].id
+    ) {
       this.toggleScrollNext(true);
       if (this.current.distance >= widok.h / 4) {
-        this.current.bullet.removeCurrent();
+        this.current.bullet.removeCurrentBelow();
         this.current = undefined;
       } else {
-        this.current.bullet.markCurrent();
+        this.markCurrent();
       }
     } else {
+      this.markCurrent();
+    }
+  }
+
+  markCurrent() {
+    if (this.current !== this.prevCurrent) {
       this.current.bullet.markCurrent();
-      this.toggleScrollNext(false);
     }
   }
 
@@ -178,15 +188,31 @@ class Bullet {
   }
 
   markCurrent() {
-    this.element.addClass('anchor-current');
+    let isPrev = true;
     this.section.set.sections.forEach(section => {
-      if (section.id === this.section.id) return;
       section.bullet.element.removeClass('anchor-current');
+      section.bullet.element.removeClass('anchor-prev');
+      section.bullet.element.removeClass('anchor-next');
+      if (section.id === this.section.id) {
+        isPrev = false;
+        this.element.addClass('anchor-current');
+      } else if (isPrev) {
+        section.bullet.element.addClass('anchor-prev');
+      } else {
+        section.bullet.element.addClass('anchor-next');
+      }
     });
   }
 
-  removeCurrent() {
+  removeCurrentAbove() {
     this.element.removeClass('anchor-current');
+    this.element.addClass('anchor-next');
+  }
+
+  removeCurrentBelow() {
+    console.log('helooo');
+    this.element.removeClass('anchor-current');
+    this.element.addClass('anchor-prev');
   }
 }
 
